@@ -13,6 +13,12 @@ h1 {
     font-size: 3rem;
 }
 
+h2 {
+    text-align: center;
+    color: #f8f8f8;
+    font-weight: 400;
+}
+
 #mainContainer {
     height: 500px;
     display: flex;
