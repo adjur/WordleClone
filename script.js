@@ -11,7 +11,6 @@ const h2 = document.querySelector('h2')
 const button = document.querySelector('button')
 document.addEventListener('DOMContentLoaded', resetGame);
 
-
 function onKeyHandle(event) {
     const key = event.key.toUpperCase();
     if (event.key === 'Enter') {
@@ -50,27 +49,34 @@ async function fetchNewWord() {
 
     try {
         const response = await fetch(url);
-        const words = await response.json()
-        const answer = words[0]
-        console.log('Words fetched:', answer)
-
-        const response1 = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + answer)
-
+        const words = await response.json();
         if (words.length > 0 && typeof words[0] === 'string') {
-            return answer.toUpperCase()
+            const answer = words[0];
+            console.log('Word fetched:', answer);
+
+            const validationUrl = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + answer;
+            const validationResponse = await fetch(validationUrl);
+            if (!validationResponse.ok) {
+                throw new Error('Word not valid or not found in dictionary');
+            }
+            const validationData = await validationResponse.json();
+            if (validationData.length > 0 && validationData[0].word) {
+                console.log('Valid word:', answer);
+                return answer.toUpperCase();
+            } else {
+                throw new Error('Invalid word fetched, trying again.');
+            }
         }
-        // else {
-        //     throw new Error('No words found.')
-        // }
     } catch (error) {
-        console.error('Failed to fetch new word:', error)
-        return fetchNewWord()
+        console.error('Failed to fetch/validate new word:', error);
+        return fetchNewWord();
     }
 }
 
+//compare user guess against dictionary
 async function submitGuess() {
     if (userGuess.length !== 5) {
-        h2.textContent = "Please enter a 5-letter word.";
+        showMessage("Please enter a 5-letter word.");
         return;
     }
 
@@ -87,32 +93,51 @@ async function submitGuess() {
             console.log("Valid word!");
             continueGameLogic(guessedWord);
         } else {
-            h2.textContent = "The word doesn't exist. Try another.";
+            showMessage("Not in word list.");
         }
     } catch (error) {
         console.log('Error validating word:', error.message);
-        h2.textContent = "The word doesn't exist. Try another.";
+        showMessage("Not a valid word. Try another.");
+    }
+}
+function showMessage(message, persist = false) {
+    const h2 = document.getElementById('message');
+    h2.textContent = message;
+    h2.classList.add('show');
+    if (!persist) {
+        setTimeout(() => {
+            h2.classList.remove('show');
+        }, 3000);
     }
 }
 
 function continueGameLogic(guessedWord) {
     letterCheck(secretWord, [...userGuess]);
     pastGuesses.push([...userGuess]);
-    userGuess = [];
 
-    if (pastGuesses[pastGuesses.length - 1].join('') === secretWord) {
-        h2.textContent = "Congratulations! You've guessed the word correctly!";
-        document.removeEventListener('keydown', onKeyHandle);
-    }
     updateBoxes();
 
-    if (++currentRowIndex >= rows.length) {
-        h2.textContent = `Game over! The word was: ${secretWord}`;
+    if (pastGuesses[pastGuesses.length - 1].join('') === secretWord) {
+        showMessage("Congratulations! You've guessed the word correctly!", true);
+        document.removeEventListener('keydown', onKeyHandle);
+        setTimeout(() => {
+
+            userGuess = [];
+            if (++currentRowIndex >= rows.length) {
+                showMessage(`Game over! The word was: ${secretWord}`, true);
+            } else {
+                updateBoxes();
+            }
+        }, 3000);
     } else {
-        updateBoxes();
+        userGuess = [];
+        if (++currentRowIndex >= rows.length) {
+            showMessage(`Game over! The word was: ${secretWord}`, true);
+        } else {
+            updateBoxes();
+        }
     }
 }
-
 
 //GAME LOGIC//
 function letterCheck(secretWord, userGuess) {
@@ -178,7 +203,3 @@ async function resetGame() {
 button.addEventListener('click', resetGame)
 
 console.log(secretWord)
-console.log("Updating boxes with:", userGuess);
-console.log("Current row index:", currentRowIndex);
-
-//last box doesn't reflect text of userGuess. needs work.  
