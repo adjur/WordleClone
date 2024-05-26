@@ -12,19 +12,18 @@ const button = document.querySelector('button')
 document.addEventListener('DOMContentLoaded', resetGame);
 
 function celebrateWin() {
-    // Confetti from the left bottom corner
     confetti({
         particleCount: 100,
         spread: 70,
-        angle: 60,   // angle to spread from left to right
-        origin: { y: 1, x: 0 } // start from the bottom left corner
+        angle: 60,
+        origin: { y: 1, x: 0 }
     });
-    // Confetti from the right bottom corner
+
     confetti({
         particleCount: 100,
         spread: 70,
-        angle: 120,  // angle to spread from right to left
-        origin: { y: 1, x: 1 } // start from the bottom right corner
+        angle: 120,
+        origin: { y: 1, x: 1 }
     });
 }
 
@@ -194,6 +193,18 @@ function letterCheck(secretWord, userGuess) {
             }
             currentRowBoxes[i].innerText = guess;
         }
+    });
+    animateBoxes(currentRowBoxes);
+}
+
+function animateBoxes(boxes) {
+    boxes.forEach(box => {
+        box.classList.add('pulse');
+
+        // Remove the animation class after it ends to reset the animation
+        box.addEventListener('animationend', () => {
+            box.classList.remove('pulse');
+        });
     });
 }
 
