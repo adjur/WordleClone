@@ -1,7 +1,10 @@
+* {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 body {
     background-color: #121213;
     margin: 0;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 h1 {
@@ -18,8 +21,6 @@ h2 {
     color: #f8f8f8;
     font-weight: 400;
     height: 10px;
-    /* transition: opacity 1s ease-in-out;
-    margin-top: 0%; */
 }
 
 .message {
@@ -107,4 +108,47 @@ button:hover {
     top: 5px;
     border: 1px solid #49494b;
     border-radius: 3%;
+}
+
+@media screen and (max-width: 620px) {
+    h1 {
+        font-size: 2rem;
+        padding: 0.5rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    #mainContainer {
+        height: auto;
+        padding: 10px;
+    }
+
+    .box {
+        height: 3rem;
+        width: 3rem;
+        line-height: 3rem;
+        font-size: 1.5em;
+    }
+
+    button {
+        padding: 8px 8px;
+        font-size: 12px;
+    }
+
+    #btnDiv {
+
+        margin: 10px 0;
+    }
+
+    .row {
+
+        margin: 5px 0;
+    }
+
+    .instructions,
+    .message {
+        padding: 0 10px;
+    }
 }
