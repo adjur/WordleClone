@@ -11,6 +11,23 @@ const h2 = document.querySelector('h2')
 const button = document.querySelector('button')
 document.addEventListener('DOMContentLoaded', resetGame);
 
+function celebrateWin() {
+    // Confetti from the left bottom corner
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        angle: 60,   // angle to spread from left to right
+        origin: { y: 1, x: 0 } // start from the bottom left corner
+    });
+    // Confetti from the right bottom corner
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        angle: 120,  // angle to spread from right to left
+        origin: { y: 1, x: 1 } // start from the bottom right corner
+    });
+}
+
 function onKeyHandle(event) {
     const key = event.key.toUpperCase();
     if (event.key === 'Enter') {
@@ -120,6 +137,12 @@ function continueGameLogic(guessedWord) {
     if (pastGuesses[pastGuesses.length - 1].join('') === secretWord) {
         showMessage("Congratulations! You've guessed the word correctly!", true);
         document.removeEventListener('keydown', onKeyHandle);
+        celebrateWin()
+        // document.addEventListener('keyup', function (event) {
+        //     if (event.key === "Enter") {
+        //         celebrateWin(); // Allow multiple triggers on pressing Enter
+        //     }
+        // })
         setTimeout(() => {
 
             userGuess = [];
@@ -197,9 +220,10 @@ async function resetGame() {
     })
     h2.innerText = ''
     document.addEventListener('keydown', onKeyHandle)
-    console.log(secretWord)
+    console.log(`The new secret word is: ${secretWord}`)
+    document.activeElement.blur();
 }
 
 button.addEventListener('click', resetGame)
 
-console.log(secretWord)
+
