@@ -142,15 +142,17 @@ function continueGameLogic(guessedWord) {
         //         celebrateWin(); // Allow multiple triggers on pressing Enter
         //     }
         // })
-        setTimeout(() => {
 
-            userGuess = [];
-            if (++currentRowIndex >= rows.length) {
-                showMessage(`Game over! The word was: ${secretWord}`, true);
-            } else {
-                updateBoxes();
-            }
-        }, 3000);
+        
+        // setTimeout(() => {
+
+        //     userGuess = [];
+        //     if (++currentRowIndex >= rows.length) {
+        //         showMessage(`Game over! The word was: ${secretWord}`, true);
+        //     } else {
+        //         updateBoxes();
+        //     }
+        // }, 3000);
     } else {
         userGuess = [];
         if (++currentRowIndex >= rows.length) {
