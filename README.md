@@ -1,6 +1,6 @@
 # WordleClone 🎮
 
-[View this project live!](#https://adjur.github.io/WordleClone/)
+[View this project live!](https://adjur.github.io/WordleClone/)
 
 Welcome to **WordleClone**, a fun and engaging clone of the popular word-guessing game Wordle from The New York Times. Built with Vanilla JavaScript, HTML, and CSS, this project showcases fundamental web development skills and provides an enjoyable gaming experience.
 
